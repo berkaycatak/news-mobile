@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:news_mobile/models/category_model.dart';
 import 'package:news_mobile/screens/category/detail/category_detail_screen.dart';
+import 'package:news_mobile/utils/constants/constants.dart';
 
-class CategoryListItemWidget extends StatelessWidget {
-  final String image;
-  final String categoryName;
+class CategoryListItemWidget extends StatefulWidget {
+  final CategoryModel categoryModel;
 
   const CategoryListItemWidget({
     super.key,
-    required this.image,
-    required this.categoryName,
+    required this.categoryModel,
   });
 
+  @override
+  State<CategoryListItemWidget> createState() => _CategoryListItemWidgetState();
+}
+
+class _CategoryListItemWidgetState extends State<CategoryListItemWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -18,7 +23,9 @@ class CategoryListItemWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const CategoryDetailScreen(),
+            builder: (context) => CategoryDetailScreen(
+              categoryModel: widget.categoryModel,
+            ),
           ),
         );
       },
@@ -31,7 +38,7 @@ class CategoryListItemWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: Image.network(
-                image,
+                Constants.IMAGE_URL + widget.categoryModel.image!,
                 fit: BoxFit.cover,
                 color: Colors.black.withOpacity(.4),
                 colorBlendMode: BlendMode.darken,
@@ -39,7 +46,7 @@ class CategoryListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            categoryName,
+            widget.categoryModel.name!,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
